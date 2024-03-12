@@ -102,7 +102,7 @@ def calculate_total_tickets_price():
         INNER JOIN BillettPris ON TeaterStykke.StykkeID = BillettPris.TeaterStykke
         INNER JOIN Kundegruppe ON BillettPris.Kundegruppe = Kundegruppe.KundegruppeID
         WHERE Forestilling.Spilldato = '2024-02-03 18:30:00'
-        AND Kundegruppe.Navn = 'OrdinÃ¦r';
+        AND Kundegruppe.Navn = 'Ordinær';
     """
 
     cursor.execute(query)
@@ -166,7 +166,7 @@ def get_actors_played_together(actor: str):
     query = """
         SELECT DISTINCT ValgtAnsatt.Navn AS ValgtSkuespiller, MedAnsattt.Navn AS MedSkuespiller, Akt.Navn, TeaterStykke.Navn
         FROM SpillerSom S1
-        JOIN SpillerSom S2 ON S1.Rolle = S2.Rolle
+        JOIN SpillerSom S2 ON S1.Rolle = S2.Rolle AND S1.Skuespiller < S2.Skuespiller
         JOIN HarRoller HR1 ON S1.Rolle = HR1.Rolle
         JOIN HarRoller HR2 ON S2.Rolle = HR2.Rolle AND HR1.Akt = HR2.Akt
         JOIN Akt ON HR1.Akt = Akt.AktID
