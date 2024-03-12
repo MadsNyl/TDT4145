@@ -183,3 +183,20 @@ def get_actors_played_together(actor: str):
     actors_played_together = cursor.fetchall()
 
     return actors_played_together
+
+
+def best_seller():
+    query = '''
+        SELECT tstykke.Navn as Forestillingsnavn, f.Spilldato, COUNT(b.BillettID) AS AntallSolgteBilletter
+        FROM Forestilling AS f
+        INNER JOIN TeaterStykke AS tstykke ON f.TeaterStykke = tstykke.StykkeID
+        LEFT JOIN Billett AS b ON b.Forestilling = f.ForestillingID
+        GROUP BY f.ForestillingID
+        ORDER BY AntallSolgteBilletter DESC
+        '''
+    cursor.execute(query)
+    forestillinger = cursor.fetchall()
+    for f in forestillinger:
+        print(f)
+
+best_seller()
