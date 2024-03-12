@@ -1,6 +1,6 @@
 from pool import cursor, conn
 
-
+#
 # Her skal du kjøpe 9 voksenbilletter til forestillingen for Størst av alt er
 # kjærligheten 3. februar, hvor det er 9 ledige billetter og hvor stolene er på
 # samme rad. Stolene trenger ikke være ved siden av hverandre. Vi ønsker å få
