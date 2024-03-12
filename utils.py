@@ -17,8 +17,22 @@ def run_sql_script(script_path: str) -> None:
         conn.commit()
 
 
-def convert_tickets_to_string(tickets: tuple) -> str:
+def convert_tickets_to_string(tickets: list[tuple]) -> str:
     return_string = ""
-    for value in tickets:
-        return_string += f"Rad: {value[0]}, Stol: {value[1]}, Seksjon: {value[3]}\n"
+    for ticket in tickets:
+        return_string += f"Rad: {ticket[0]}, Stol: {ticket[1]}, Seksjon: {ticket[3]}\n"
+    return return_string
+
+
+def convert_actors_and_roles_to_string(actors: list[tuple]) -> str:
+    return_string = ""
+    for actor in actors:
+        return_string += f"Teaterstykke: {actor[0]}, Skuespiller: {actor[2]}, Rolle: {actor[1]}\n"
+    return return_string
+
+
+def convert_plays_to_string(plays: list[tuple]) -> str:
+    return_string = ""
+    for play in plays:
+        return_string += f"Forestilling: {play[0]}, Antall Biletter Solgt: {play[1]}\n"
     return return_string

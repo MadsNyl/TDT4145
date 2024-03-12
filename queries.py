@@ -117,7 +117,7 @@ get_available_seats()
 # opp hvor mange billetter (dvs. stoler) som er solgt. Ta også med forestillinger
 # hvor det ikke er solgt noen billetter.
 
-def get_show_and_tickets_purchased(dato):
+def get_show_and_tickets_purchased(date: str):
     query = """
         SELECT tstykke.Navn, COUNT(b.BillettID) AS AntallSolgteBilletter
         FROM Forestilling AS f
@@ -129,25 +129,31 @@ def get_show_and_tickets_purchased(dato):
     """
 
     # Utfør spørringen
-    cursor.execute(query, (dato,))
+    cursor.execute(query, (date,))
 
     # Hent og skriv ut resultatene
-    forestillinger = cursor.fetchall()
-    if forestillinger:
-        print("ForestillingID, Navn på TeaterStykke, Antall Solgte Billetter")
-        for forestilling in forestillinger:
-            print(forestilling)
-    else:
-        print("Ingen forestillinger funnet på denne datoen.")
+    plays = cursor.fetchall()
+    return plays
 
 
+# Vi ønsker å lage et query i SQL som finner hvilke (navn på) skuespillere som
+# opptrer i de forskjellige teaterstykkene. Skriv ut navn på teaterstykke,
+# navn på skuespiller og rolle.
 
-def format_1(forestillinger: tuple) -> str:
-    return_string = ""
-    for value in forestillinger:
-        return_string += f"Forestilling:\t\t    Antall Biletter Solgt: {value[1]} \n"
-    return return_string
+def get_actors_and_roles():
+    query = """
+        SELECT TeaterStykke.Navn, Rolle.Navn, Ansatt.Navn
+        FROM TeaterStykke
+        INNER JOIN Akt ON TeaterStykke.StykkeID = Akt.TeaterStykke
+        INNER JOIN HarRoller ON Akt.AktID = HarRoller.Akt
+        INNER JOIN Rolle ON HarRoller.Rolle = Rolle.RolleID
+        INNER JOIN SpillerSom ON Rolle.RolleID = SpillerSom.Rolle
+        INNER JOIN Skuespiller ON SpillerSom.Skuespiller = Skuespiller.SkuespillerID
+        INNER JOIN Ansatt ON Skuespiller.SkuespillerID = Ansatt.AnsattID
+        ORDER BY TeaterStykke.Navn, Ansatt.Navn;
+    """
 
-dato = '2024-02-06'
-get_show_and_tickets_purchased(dato)
+    cursor.execute(query)
+    actors_and_roles = cursor.fetchall()
 
+    return actors_and_roles
