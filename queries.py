@@ -1,6 +1,6 @@
 from pool import cursor, conn
 
-#
+
 # Her skal du kjøpe 9 voksenbilletter til forestillingen for Størst av alt er
 # kjærligheten 3. februar, hvor det er 9 ledige billetter og hvor stolene er på
 # samme rad. Stolene trenger ikke være ved siden av hverandre. Vi ønsker å få
@@ -18,7 +18,7 @@ def get_available_seats():
             INNER JOIN Seksjon ON Stol.Seksjon = Seksjon.SeksjonID
             INNER JOIN Sal ON Seksjon.Sal = Sal.SalID
             INNER JOIN TeaterStykke ON Sal.SalID = TeaterStykke.Sal
-            WHERE TeaterStykke.Navn = 'StÃ¸rst av alt er kjÃ¦rligheten'
+            WHERE TeaterStykke.Navn = 'Størst av alt er kjærligheten'
             GROUP BY Stol.Rad, Stol.Seksjon
             HAVING stoler_per_rad - (
                 SELECT COUNT(*)
@@ -53,8 +53,8 @@ def insert_tickets(tickets: list[tuple]):
             FROM BillettPris
             INNER JOIN TeaterStykke ON BillettPris.TeaterStykke = TeaterStykke.StykkeID
             INNER JOIN Kundegruppe ON BillettPris.Kundegruppe = Kundegruppe.KundegruppeID
-            WHERE TeaterStykke.Navn = 'StÃ¸rst av alt er kjÃ¦rligheten'
-            AND Kundegruppe.Navn = 'OrdinÃ¦r';
+            WHERE TeaterStykke.Navn = 'Størst av alt er kjærligheten'
+            AND Kundegruppe.Navn = 'Ordinær';
         """
     )
 
@@ -67,7 +67,7 @@ def insert_tickets(tickets: list[tuple]):
             FROM Forestilling
             INNER JOIN TeaterStykke ON Forestilling.TeaterStykke = TeaterStykke.StykkeID
             WHERE Spilldato = '2024-02-03 18:30:00'
-            AND TeaterStykke.Navn = 'StÃ¸rst av alt er kjÃ¦rligheten';
+            AND TeaterStykke.Navn = 'Størst av alt er kjærligheten';
         """
     )
 

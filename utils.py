@@ -11,7 +11,7 @@ def get_date(line: str) -> str | None:
 
 
 def run_sql_script(script_path: str) -> None:
-    with open(script_path, 'r') as script_file:
+    with open(script_path, 'r', encoding="utf-8") as script_file:
         sql_script = script_file.read()
         cursor.executescript(sql_script)
         conn.commit()
