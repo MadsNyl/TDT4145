@@ -110,7 +110,6 @@ def calculate_total_tickets_price():
 
     return total_price[0]
 
-get_available_seats()
 
 # Her skal du implementere et Pythonprogram (med bruk av SQL) som tar inn
 # en dato og skriver ut hvilke forestillinger som finnes på denne datoen og lister
