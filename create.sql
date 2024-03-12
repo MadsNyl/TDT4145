@@ -1,0 +1,136 @@
+CREATE TABLE Ansatt (
+    AnsattID INTEGER PRIMARY KEY,
+    Navn VARCHAR(255) NOT NULL,
+    Epost VARCHAR(255) NOT NULL UNIQUE,
+    Ansatt_status VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Skuespiller (
+    SkuespillerID INTEGER PRIMARY KEY,
+    CONSTRAINT Skuespiller_Ansatt_FK FOREIGN KEY (SkuespillerID) REFERENCES Ansatt(AnsattID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Teatermedarbeider (
+    AnsattID INTEGER PRIMARY KEY,
+    Rolle VARCHAR(255) NOT NULL,
+    Teaterstykke INTEGER NOT NULL,
+    CONSTRAINT Teatermedarbeider_Ansatt_FK
+    FOREIGN KEY (AnsattID) REFERENCES Ansatt(AnsattID) ON DELETE CASCADE
+    CONSTRAINT Teatermedarbeider_Teaterstykke_FK FOREIGN KEY (Teaterstykke) REFERENCES TeaterStykke(StykkeID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Sal (
+    SalID INTEGER PRIMARY KEY,
+    Navn VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE TeaterStykke (
+    StykkeID INTEGER PRIMARY KEY,
+    Navn VARCHAR(255) NOT NULL,
+    Dramatiker VARCHAR(255) NOT NULL,
+    Sal INTEGER UNIQUE,
+    CONSTRAINT TeaterStykke_Sal_FK
+    FOREIGN KEY (Sal) REFERENCES Sal(SalID) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE Akt (
+    AktID INTEGER PRIMARY KEY,
+    Nummer INTEGER NOT NULL,
+    Navn VARCHAR(255) NOT NULL,
+    TeaterStykke INTEGER NOT NULL,
+    CONSTRAINT Akt_TeaterStykke_FK
+    FOREIGN KEY (TeaterStykke) REFERENCES TeaterStykke(StykkeID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Rolle (
+    RolleID INTEGER PRIMARY KEY,
+    Navn VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE HarRoller (
+    Akt INTEGER NOT NULL,
+    Rolle INTEGER NOT NULL,
+    PRIMARY KEY (Akt, Rolle),
+    CONSTRAINT HarRoller_Akt_FK
+    FOREIGN KEY (Akt) REFERENCES Akt(AktID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT HarRoller_Rolle_FK
+    FOREIGN KEY (Rolle) REFERENCES Rolle(RolleID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE SpillerSom (
+    Rolle INTEGER NOT NULL,
+    Skuespiller INTEGER NOT NULL,
+    PRIMARY KEY (Rolle, Skuespiller),
+    CONSTRAINT SpillerSom_Rolle_FK FOREIGN KEY (Rolle) REFERENCES Rolle(RolleID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT SpillerSom_Skuespiller_FK FOREIGN KEY (Skuespiller) REFERENCES Skuespiller(SkuespillerID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Seksjon (
+    SeksjonID INTEGER PRIMARY KEY,
+    Navn VARCHAR(255) NOT NULL,
+    Sal INTEGER NOT NULL,
+    CONSTRAINT Seksjon_Sal_FK
+    FOREIGN KEY (Sal) REFERENCES Sal(SalID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Stol (
+    Rad INTEGER NOT NULL,
+    StolNummer INTEGER NOT NULL,
+    Seksjon INTEGER NOT NULL,
+    PRIMARY KEY (Rad, StolNummer, Seksjon),
+    CONSTRAINT Stol_Seksjon_FK
+    FOREIGN KEY (Seksjon) REFERENCES Seksjon(SeksjonID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Forestilling (
+    ForestillingID INTEGER PRIMARY KEY,
+    Spilldato DATETIME NOT NULL,
+    TeaterStykke INTEGER NOT NULL,
+    CONSTRAINT Forestilling_TeaterStykke_FK
+    FOREIGN KEY (TeaterStykke) REFERENCES TeaterStykke(StykkeID) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT Unik_Forestilling UNIQUE (Spilldato, TeaterStykke)
+);
+
+CREATE TABLE Kundeprofil (
+    ProfilID INTEGER PRIMARY KEY,
+    Navn VARCHAR(255) NOT NULL,
+    Mobilnummer VARCHAR(20) NOT NULL UNIQUE,
+    Adresse VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Kundegruppe (
+    KundegruppeID INTEGER PRIMARY KEY,
+    Navn VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE BillettPris (
+    BilettPrisID INTEGER PRIMARY KEY,
+    Pris INTEGER NOT NULL,
+    Kundegruppe INTEGER NOT NULL,
+    TeaterStykke INTEGER NOT NULL,
+    CONSTRAINT BillettPris_Kundegruppe_FK FOREIGN KEY (Kundegruppe) REFERENCES Kundegruppe(KundegruppeID) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT BillettPris_TeaterStykke_FK FOREIGN KEY (TeaterStykke) REFERENCES TeaterStykke(StykkeID) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT Unik_BillettPris UNIQUE (Kundegruppe, TeaterStykke),
+    CONSTRAINT Sjekk_Pris CHECK (Pris > 0)
+);
+
+CREATE TABLE Billett (
+    BillettID INTEGER PRIMARY KEY,
+    Pris INTEGER NOT NULL,
+    Kjøpsdato DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    Rad INT NOT NULL,
+    StolNummer INT NOT NULL,
+    Seksjon INT NOT NULL,
+    Forestilling INT NOT NULL,
+    Kundeprofil INT NOT NULL,
+    CONSTRAINT Billett_Stol_FK FOREIGN KEY (Rad, StolNummer, Seksjon) REFERENCES Stol(Rad, StolNummer, SeksjonID) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT Billett_Forestilling_FK FOREIGN KEY (Forestilling) REFERENCES Forestilling(ForestillingID) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT Billett_Kundeprofil_FK FOREIGN KEY (Kundeprofil) REFERENCES Kundeprofil(ProfilID) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT Billett_BillettPris_FK FOREIGN KEY (Pris) REFERENCES BillettPris(BilettPrisID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Glemt å legge til Pris som fremmednøkkel til BillettPris
+-- Glemt å fjerne Type fra Billett
+
+
