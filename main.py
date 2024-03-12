@@ -1,9 +1,9 @@
-from utils import run_sql_script
+from utils import run_sql_script, convert_tickets_to_string
 
 from scan_seats_hovedscenen import run_main_scene
 from scan_seats_gamlescene import run_old_scene
 
-from queries import get_available_seats
+from queries import get_available_seats, calculate_total_tickets_price
 
 
 if __name__ == "__main__":
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     # Kjører programmet
     while True:
-        print("\n1. Finn og kjøp 9 ledige seter på samme rad, og kalkuler totalpris.")
+        print("\n\n\n1. Finn og kjøp 9 ledige seter på samme rad, og kalkuler totalpris.")
         print("2. Hent forestillinger for en gitt dato, for å få informasjon om antall billetter solgt per forestilling.")
         print("3. Hent alle skuespillere og deres roller for teaterstykkene.")
         print("4. Hent sortert liste over mestselgende forestillinger")
@@ -37,7 +37,14 @@ if __name__ == "__main__":
             print("Avslutter programmet...")
             break
 
-        if choice == "1":
-            # buy_available_seats()
+        elif choice == "1":
+            tickets = get_available_seats()
+            tickets = convert_tickets_to_string(tickets)
+            print("Dine billetter:")
+            print(tickets)
+            total_price = calculate_total_tickets_price()
+            print(f"Totalpris for 9 voksenbilletter: {total_price} kr")
+        
+        elif choice == "2":
             pass
 

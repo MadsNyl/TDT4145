@@ -10,7 +10,7 @@ from pool import cursor, conn
 
 def get_available_seats():
     query = """
-        SELECT Utvalg.*, Stol.Rad, Stol.StolNummer, Stol.Seksjon
+        SELECT Stol.Rad, Stol.StolNummer, Seksjon.Navn
         FROM
         (
             SELECT Stol.Rad, Stol.Seksjon, COUNT(Stol.Rad) AS stoler_per_rad, Seksjon.Navn, Sal.Navn, TeaterStykke.Navn
@@ -30,6 +30,7 @@ def get_available_seats():
             LIMIT 1
         ) AS Utvalg
         INNER JOIN Stol ON Utvalg.Rad = Stol.Rad AND Utvalg.Seksjon = Stol.Seksjon
+        INNER JOIN Seksjon ON Stol.Seksjon = Seksjon.SeksjonID
         LEFT JOIN Billett ON Stol.Rad = Billett.Rad AND Stol.StolNummer = Billett.StolNummer AND Stol.Seksjon = Billett.Seksjon
         WHERE Billett.BillettID IS NULL
         LIMIT 9;
@@ -38,10 +39,30 @@ def get_available_seats():
     cursor.execute(query)
     tickets = cursor.fetchall()
     
-    for ticket in tickets:
-        print(ticket)
+    return tickets
 
 
-get_available_seats()
+def calculate_total_tickets_price():
+    query = """
+        SELECT BillettPris.Pris * 9 AS TotalPris
+        FROM Forestilling
+        INNER JOIN TeaterStykke ON Forestilling.TeaterStykke = TeaterStykke.StykkeID
+        INNER JOIN BillettPris ON TeaterStykke.StykkeID = BillettPris.TeaterStykke
+        INNER JOIN Kundegruppe ON BillettPris.Kundegruppe = Kundegruppe.KundegruppeID
+        WHERE Forestilling.Spilldato = '2024-02-03 18:30:00'
+        AND Kundegruppe.Navn = 'OrdinÃ¦r';
+    """
+
+    cursor.execute(query)
+    total_price = cursor.fetchone()
+
+    return total_price[0]
+
+
+
+# Her skal du implementere et Pythonprogram (med bruk av SQL) som tar inn
+# en dato og skriver ut hvilke forestillinger som finnes på denne datoen og lister
+# opp hvor mange billetter (dvs. stoler) som er solgt. Ta også med forestillinger
+# hvor det ikke er solgt noen billetter.
 
 
