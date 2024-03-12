@@ -1,4 +1,9 @@
-from utils import run_sql_script, convert_tickets_to_string
+from utils import (
+    run_sql_script,
+    convert_tickets_to_string,
+    convert_actors_and_roles_to_string,
+    convert_plays_to_string
+)
 
 from scan_seats_hovedscenen import run_main_scene
 from scan_seats_gamlescene import run_old_scene
@@ -6,7 +11,9 @@ from scan_seats_gamlescene import run_old_scene
 from queries import (
     get_available_seats,
     calculate_total_tickets_price,
-    insert_tickets
+    insert_tickets,
+    get_actors_and_roles,
+    get_show_and_tickets_purchased
 )
 
 
@@ -35,7 +42,7 @@ if __name__ == "__main__":
         print("5. Hent informasjon om skuespillere en gitt skuespiller har spilt sammen med.")
         print("6. Avslutt")
 
-        choice = input("Vennligst velg et alternativ (1 - 6): ")
+        choice = input("\nVennligst velg et alternativ (1 - 6): \n")
 
         if choice == "6":
             print("Avslutter programmet...")
@@ -51,5 +58,15 @@ if __name__ == "__main__":
             print(f"Totalpris for 9 voksenbilletter: {total_price} kr")
         
         elif choice == "2":
-            pass
+            date = input("Vennligst skriv inn en dato (YYYY-MM-DD): \n")
+            plays = get_show_and_tickets_purchased(date)
+            plays = convert_plays_to_string(plays)
+            print(f"Forestillinger og antall billetter solgt for {date}: ")
+            print(plays)
+
+        elif choice == "3":
+            actors = get_actors_and_roles()
+            actors = convert_actors_and_roles_to_string(actors)
+            print("Skuespillere og roller for hvert teaterstykke: ")
+            print(actors)
 
