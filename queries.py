@@ -10,7 +10,7 @@ from pool import cursor, conn
 
 def get_available_seats():
     query = """
-        SELECT Stol.Rad, Stol.StolNummer, Seksjon.Navn
+        SELECT Stol.Rad, Stol.StolNummer, Stol.Seksjon, Seksjon.Navn
         FROM
         (
             SELECT Stol.Rad, Stol.Seksjon, COUNT(Stol.Rad) AS stoler_per_rad, Seksjon.Navn, Sal.Navn, TeaterStykke.Navn
@@ -42,6 +42,58 @@ def get_available_seats():
     return tickets
 
 
+def insert_tickets(tickets: list[tuple]):
+    # Hent siste billettID og legg til 1
+    ticketId = cursor.execute("SELECT MAX(BillettID) FROM Billett").fetchone()[0] + 1
+
+    # Hent Pris for voksenbillett
+    cursor.execute(
+        """
+            SELECT BillettPris.BilettPrisID, Kundegruppe.KundegruppeID
+            FROM BillettPris
+            INNER JOIN TeaterStykke ON BillettPris.TeaterStykke = TeaterStykke.StykkeID
+            INNER JOIN Kundegruppe ON BillettPris.Kundegruppe = Kundegruppe.KundegruppeID
+            WHERE TeaterStykke.Navn = 'StÃ¸rst av alt er kjÃ¦rligheten'
+            AND Kundegruppe.Navn = 'OrdinÃ¦r';
+        """
+    )
+
+    ticket_info = cursor.fetchone()
+
+    # Hent forestillingID
+    cursor.execute(
+        """
+            SELECT ForestillingID
+            FROM Forestilling
+            INNER JOIN TeaterStykke ON Forestilling.TeaterStykke = TeaterStykke.StykkeID
+            WHERE Spilldato = '2024-02-03 18:30:00'
+            AND TeaterStykke.Navn = 'StÃ¸rst av alt er kjÃ¦rligheten';
+        """
+    )
+
+    playId = cursor.fetchone()[0]
+
+    for ticket in tickets:
+        cursor.execute(
+            """
+                INSERT INTO Billett 
+                (BillettID, Pris, Rad, StolNummer, Seksjon, Forestilling, Kundeprofil)
+                VALUES (?, ?, ?, ?, ?, ?, ?);
+            """,
+            (
+                ticketId,
+                ticket_info[0],
+                ticket[0],
+                ticket[1],
+                ticket[2],
+                playId,
+                ticket_info[1]
+            )   
+        )
+        conn.commit()
+        ticketId += 1
+
+
 def calculate_total_tickets_price():
     query = """
         SELECT BillettPris.Pris * 9 AS TotalPris
@@ -58,7 +110,7 @@ def calculate_total_tickets_price():
 
     return total_price[0]
 
-
+get_available_seats()
 
 # Her skal du implementere et Pythonprogram (med bruk av SQL) som tar inn
 # en dato og skriver ut hvilke forestillinger som finnes på denne datoen og lister

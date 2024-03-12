@@ -3,7 +3,11 @@ from utils import run_sql_script, convert_tickets_to_string
 from scan_seats_hovedscenen import run_main_scene
 from scan_seats_gamlescene import run_old_scene
 
-from queries import get_available_seats, calculate_total_tickets_price
+from queries import (
+    get_available_seats,
+    calculate_total_tickets_price,
+    insert_tickets
+)
 
 
 if __name__ == "__main__":
@@ -39,6 +43,7 @@ if __name__ == "__main__":
 
         elif choice == "1":
             tickets = get_available_seats()
+            insert_tickets(tickets)
             tickets = convert_tickets_to_string(tickets)
             print("Dine billetter:")
             print(tickets)

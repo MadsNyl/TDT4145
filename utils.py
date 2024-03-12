@@ -20,5 +20,5 @@ def run_sql_script(script_path: str) -> None:
 def convert_tickets_to_string(tickets: tuple) -> str:
     return_string = ""
     for value in tickets:
-        return_string += f"Rad: {value[0]}, Stol: {value[1]}, Seksjon: {value[2]}\n"
+        return_string += f"Rad: {value[0]}, Stol: {value[1]}, Seksjon: {value[3]}\n"
     return return_string
