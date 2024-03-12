@@ -3,7 +3,8 @@ from utils import (
     convert_tickets_to_string,
     convert_actors_and_roles_to_string,
     convert_plays_to_string,
-    convert_actors_played_together_to_string
+    convert_actors_played_together_to_string,
+    convert_most_sold_plays_to_string
 )
 
 from scan_seats_hovedscenen import run_main_scene
@@ -15,7 +16,8 @@ from queries import (
     insert_tickets,
     get_actors_and_roles,
     get_show_and_tickets_purchased,
-    get_actors_played_together
+    get_actors_played_together,
+    best_seller
 )
 
 
@@ -71,6 +73,12 @@ if __name__ == "__main__":
             actors = convert_actors_and_roles_to_string(actors)
             print("Skuespillere og roller for hvert teaterstykke: ")
             print(actors)
+        
+        elif choice == "4":
+            plays = best_seller()
+            plays = convert_most_sold_plays_to_string(plays)
+            print("Mestselgende forestillinger: ")
+            print(plays)
         
         elif choice == "5":
             actor = input("Vennligst skriv inn et skuespillernavn: \n")

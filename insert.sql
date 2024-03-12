@@ -120,9 +120,9 @@ VALUES
 (13, 'Baard Bratte'),
 (14, 'Jatgeir Skald'),
 (15, 'Dagfinn Bonde'),
-(16, 'Peter (pres og Ingebjørgs sønn)'),
+(16, 'Peter (prest og Ingebjørgs sønn)'),
 (17, 'Guttorm Ingesson'),
-(18, 'Gregorius Jonsson');
+(18, 'Gregorius Jonssønn');
 
 -- Mapping mellom roller og skuespillere
 INSERT INTO SpillerSom
@@ -134,7 +134,24 @@ VALUES
 (1, 9),
 (1, 10),
 (1, 11),
-(1, 12);
+(1, 12),
+-- 'Kongsemnene'
+(2, 17),
+(3, 18),
+(4, 19),
+(5, 20),
+(6, 21),
+(7, 22),
+(8, 22),
+(9, 23),
+(18, 24),
+(11, 25),
+(12, 25),
+(13, 26),
+(12, 26),
+(14, 27),
+(15, 27),
+(16, 28);
 
 -- Mapping mellom akt og roller
 INSERT INTO HarRoller (Akt, Rolle)

@@ -141,7 +141,7 @@ def get_show_and_tickets_purchased(date: str):
 
 def get_actors_and_roles():
     query = """
-        SELECT TeaterStykke.Navn, Rolle.Navn, Ansatt.Navn
+        SELECT DISTINCT TeaterStykke.Navn, Rolle.Navn, Ansatt.Navn
         FROM TeaterStykke
         INNER JOIN Akt ON TeaterStykke.StykkeID = Akt.TeaterStykke
         INNER JOIN HarRoller ON Akt.AktID = HarRoller.Akt
@@ -164,27 +164,30 @@ def get_actors_and_roles():
 
 def get_actors_played_together(actor: str):
     query = """
-        SELECT DISTINCT ValgtAnsatt.Navn AS ValgtSkuespiller, MedAnsattt.Navn AS MedSkuespiller, Akt.Navn, TeaterStykke.Navn
-        FROM SpillerSom S1
-        JOIN SpillerSom S2 ON S1.Rolle = S2.Rolle AND S1.Skuespiller < S2.Skuespiller
-        JOIN HarRoller HR1 ON S1.Rolle = HR1.Rolle
-        JOIN HarRoller HR2 ON S2.Rolle = HR2.Rolle AND HR1.Akt = HR2.Akt
-        JOIN Akt ON HR1.Akt = Akt.AktID
-        JOIN TeaterStykke ON Akt.TeaterStykke = TeaterStykke.StykkeID
-        JOIN Skuespiller AS AS1 ON S1.Skuespiller = AS1.SkuespillerID
-        JOIN Skuespiller AS AS2 ON S2.Skuespiller = AS2.SkuespillerID
-        JOIN Ansatt AS ValgtAnsatt ON AS1.SkuespillerID = ValgtAnsatt.AnsattID
-        JOIN Ansatt AS MedAnsattt ON AS2.SkuespillerID = MedAnsattt.AnsattID
-        WHERE ValgtAnsatt.Navn = ?
-        ORDER BY TeaterStykke.Navn, Akt.Navn;
+        SELECT DISTINCT A1.Navn, A2.Navn, TeaterStykke.Navn
+        FROM SpillerSom
+        INNER JOIN Skuespiller AS S1 ON SpillerSom.Skuespiller = S1.SkuespillerID
+        INNER JOIN Ansatt A1 ON S1.SkuespillerID = A1.AnsattID
+        INNER JOIN HarRoller AS HR1 ON SpillerSom.Rolle = HR1.Rolle
+        INNER JOIN Akt ON HR1.Akt = Akt.AktID
+        INNER JOIN HarRoller AS HR2 ON Akt.AktID = HR2.Akt
+        INNER JOIN SpillerSom AS SS2 ON HR2.Rolle = SS2.Rolle
+        INNER JOIN Skuespiller S2 ON SS2.Skuespiller = S2.SkuespillerID
+        INNER JOIN Ansatt A2 ON S2.SkuespillerID = A2.AnsattID
+        INNER JOIN TeaterStykke ON Akt.TeaterStykke = TeaterStykke.StykkeID
+        WHERE A1.Navn != A2.Navn AND A1.Navn = ?
+        ORDER BY A2.Navn;
     """
 
-    cursor.execute(query, (actor,))
+    cursor.execute(query, (actor, ))
     actors_played_together = cursor.fetchall()
+    
+    for actor in actors_played_together:
+        print(actor)
 
     return actors_played_together
 
-
+get_actors_played_together("Arturo Scotti")
 def best_seller():
     query = '''
         SELECT tstykke.Navn as Forestillingsnavn, f.Spilldato, COUNT(b.BillettID) AS AntallSolgteBilletter
@@ -195,8 +198,7 @@ def best_seller():
         ORDER BY AntallSolgteBilletter DESC
         '''
     cursor.execute(query)
-    forestillinger = cursor.fetchall()
-    for f in forestillinger:
-        print(f)
+    plays = cursor.fetchall()
+    return plays
 
 best_seller()
