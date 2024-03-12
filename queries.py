@@ -117,4 +117,37 @@ get_available_seats()
 # opp hvor mange billetter (dvs. stoler) som er solgt. Ta også med forestillinger
 # hvor det ikke er solgt noen billetter.
 
+def get_show_and_tickets_purchased(dato):
+    query = """
+        SELECT tstykke.Navn, COUNT(b.BillettID) AS AntallSolgteBilletter
+        FROM Forestilling AS f
+        INNER JOIN TeaterStykke AS tstykke ON f.TeaterStykke = tstykke.StykkeID
+        LEFT JOIN Billett b ON f.ForestillingID = b.Forestilling
+        WHERE DATE(f.Spilldato) = ?
+        GROUP BY f.ForestillingID
+        ORDER BY f.ForestillingID;
+    """
+
+    # Utfør spørringen
+    cursor.execute(query, (dato,))
+
+    # Hent og skriv ut resultatene
+    forestillinger = cursor.fetchall()
+    if forestillinger:
+        print("ForestillingID, Navn på TeaterStykke, Antall Solgte Billetter")
+        for forestilling in forestillinger:
+            print(forestilling)
+    else:
+        print("Ingen forestillinger funnet på denne datoen.")
+
+
+
+def format_1(forestillinger: tuple) -> str:
+    return_string = ""
+    for value in forestillinger:
+        return_string += f"Forestilling:\t\t    Antall Biletter Solgt: {value[1]} \n"
+    return return_string
+
+dato = '2024-02-06'
+get_show_and_tickets_purchased(dato)
 
