@@ -3,6 +3,7 @@ from utils import run_sql_script
 from scan_seats_hovedscenen import run_main_scene
 from scan_seats_gamlescene import run_old_scene
 
+from queries import get_available_seats
 
 
 if __name__ == "__main__":
@@ -37,5 +38,6 @@ if __name__ == "__main__":
             break
 
         if choice == "1":
+            # buy_available_seats()
             pass
 

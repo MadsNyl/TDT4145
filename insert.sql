@@ -7,8 +7,8 @@ VALUES
 -- Teaterstykker
 INSERT INTO TeaterStykke
 VALUES 
-(1, 'Størst av alt er kjærligheten', 'Jonas Corell Petersen', 1),
-(2, 'Kongsemnene', 'Henrik Ibsen', 2);
+(1, 'Størst av alt er kjærligheten', 'Jonas Corell Petersen', 2),
+(2, 'Kongsemnene', 'Henrik Ibsen', 1);
 
 -- Akter
 INSERT INTO Akt

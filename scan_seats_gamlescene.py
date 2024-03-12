@@ -20,15 +20,15 @@ def run_old_scene():
 
             date = get_date(line)
             if date:
-                date = f"{date} 19:00:00"
+                date = f"{date} 18:30:00"
                 # hent riktig forestilling med dato og tidspunkt
-                # TeaterStykke = 2 for "Kongsemnene"
+                # TeaterStykke = 1 for "Størst av alt er kjærligheten"
                 cursor.execute(
                     """
                     SELECT ForestillingID
                     FROM Forestilling
                     WHERE Spilldato = ?
-                    AND TeaterStykke = 2
+                    AND TeaterStykke = 1
                     """,
                     (date,)
                 )

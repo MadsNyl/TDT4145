@@ -10,7 +10,7 @@ def get_date(line: str) -> str | None:
     return None
 
 
-def run_sql_script(script_path: str):
+def run_sql_script(script_path: str) -> None:
     with open(script_path, 'r') as script_file:
         sql_script = script_file.read()
         cursor.executescript(sql_script)
