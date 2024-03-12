@@ -36,3 +36,10 @@ def convert_plays_to_string(plays: list[tuple]) -> str:
     for play in plays:
         return_string += f"Forestilling: {play[0]}, Antall Biletter Solgt: {play[1]}\n"
     return return_string
+
+
+def convert_actors_played_together_to_string(actorteams: list[tuple]) -> str:
+    return_string = ""
+    for actor in actorteams:
+        return_string += f"Teaterstykke: {actor[3]}, Akt: {actor[2]}, Valgt Skuespiller: {actor[0]}, Spiller mot: {actor[1]}\n"
+    return return_string

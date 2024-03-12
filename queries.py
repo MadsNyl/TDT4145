@@ -157,3 +157,30 @@ def get_actors_and_roles():
     actors_and_roles = cursor.fetchall()
 
     return actors_and_roles
+
+
+# Du skal lage et Pythonprogram (og SQL) som tar et skuespillernavn og finner
+# hvilke skuespilllere de har spilt med i samme akt. Skriv ut navn på begge og
+# hvilket skuespill det skjedde.
+
+def get_actors_played_together(actor: str):
+    query = """
+        SELECT DISTINCT ValgtAnsatt.Navn AS ValgtSkuespiller, MedAnsattt.Navn AS MedSkuespiller, Akt.Navn, TeaterStykke.Navn
+        FROM SpillerSom S1
+        JOIN SpillerSom S2 ON S1.Rolle = S2.Rolle
+        JOIN HarRoller HR1 ON S1.Rolle = HR1.Rolle
+        JOIN HarRoller HR2 ON S2.Rolle = HR2.Rolle AND HR1.Akt = HR2.Akt
+        JOIN Akt ON HR1.Akt = Akt.AktID
+        JOIN TeaterStykke ON Akt.TeaterStykke = TeaterStykke.StykkeID
+        JOIN Skuespiller AS AS1 ON S1.Skuespiller = AS1.SkuespillerID
+        JOIN Skuespiller AS AS2 ON S2.Skuespiller = AS2.SkuespillerID
+        JOIN Ansatt AS ValgtAnsatt ON AS1.SkuespillerID = ValgtAnsatt.AnsattID
+        JOIN Ansatt AS MedAnsattt ON AS2.SkuespillerID = MedAnsattt.AnsattID
+        WHERE ValgtAnsatt.Navn = ?
+        ORDER BY TeaterStykke.Navn, Akt.Navn;
+    """
+
+    cursor.execute(query, (actor,))
+    actors_played_together = cursor.fetchall()
+
+    return actors_played_together
