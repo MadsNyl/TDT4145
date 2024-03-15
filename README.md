@@ -1,5 +1,11 @@
 # Database-prosjekt Del 2
-**Mats Nylund & Christian Stensøe**
+**Mads Nylund & Christian Stensøe**
+
+## Kommentarer
+I forrige del så var det noen feil med tabellen `Billett`. Dette kommer av at vi gjorde noen endringer før vi leverte, som vi glemte å endre på i create.sql filen. Hvordan tabellen er strukturert er derimot riktig beskrevet i selve oppgaven. Endringene er som følger:
+
+*Pris er ikke et tall med en prisverdi, men heller en fremmednøkkel til BillettPris tabellen.
+*Type er fjernet siden dette bestemmes gjennom BillettPris og Kundeprofil tabellene.
 
 ## Kjøring av programmet
 
@@ -22,7 +28,7 @@ For å kjøre programmet, følg disse stegene:
 
     - **Populerer databasen:** `insert.sql`Databasen blir fylt med forhåndsbestemte data som er nødvendige for at programmet skal kunne kjøre som forventet.
 
-    - **Populerer databasen med seksjoner, stoler og billetter:** `scan_seats_gamlescene.py` og `scan_seat_hovedscenen.py` leser hver sin tekstfil og lager seksjoner, stoler og billetter. 
+    - **Populerer databasen med seksjoner, stoler og billetter:** `scan_seat_hovedscenen.py` og `scan_seats_gamlescene.py` leser hver sin tekstfil og lager seksjoner, stoler og billetter. 
 
     - **Klar for bruk:** Nå er systemet klart til å ta imot input fra brukeren for å kjøre forskjellige brukerhistorier.
 
@@ -46,7 +52,7 @@ To forestillinger med billetter solg:
 ```bash
 2024-02-03 
 ```
-En forestillinger uten noen solgte billetter. 
+En forestilling uten noen solgte billetter. 
 ```bash
 2024-02-05 
 ```

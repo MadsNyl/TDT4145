@@ -129,8 +129,3 @@ CREATE TABLE Billett (
     CONSTRAINT Billett_Kundeprofil_FK FOREIGN KEY (Kundeprofil) REFERENCES Kundeprofil(ProfilID) ON UPDATE CASCADE ON DELETE CASCADE
     CONSTRAINT Billett_BillettPris_FK FOREIGN KEY (Pris) REFERENCES BillettPris(BilettPrisID) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
--- Glemt å legge til Pris som fremmednøkkel til BillettPris
--- Glemt å fjerne Type fra Billett
-
-
