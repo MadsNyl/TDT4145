@@ -59,6 +59,7 @@ if __name__ == "__main__":
 
         if choice == "6":
             print("Avslutter programmet...")
+            delete_database()
             break
 
         elif choice == "1":
@@ -116,7 +117,7 @@ if __name__ == "__main__":
                 actor = input("Vennligst skriv inn et skuespillernavn: \n")
                 actorteams = get_actors_played_together(actor)
                 if not len(actorteams):
-                    print(f"{actor} har ikke spilt sammen med noen.")
+                    print(f"{actor} har ikke spilt sammen med noen, eller finnes ikke i databasen. Skrev du navnet med store forbokstaver? Prøv igjen.")
                     continue
                 actorteams = convert_actors_played_together_to_string(actorteams)
                 print("Skuespillere som har spilt sammen: ")
