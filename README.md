@@ -1,10 +1,3 @@
-Sfsdf
-
-
-
-
-
-
 # Database-prosjekt Del 2
 **Mats Nylund & Christian Stensøe**
 
@@ -74,7 +67,7 @@ To forestillinger uten noen solgte billetter.
 ### 5. Hent informasjon om skuespillere en gitt skuespiller har spilt sammen med.
 **Forklaring:** Finn ut hvilke skuespillere en bestemt skuespiller har delt scene med i forskjellige teaterstykker.
 
-**Eksempeldata:** Ved å oppgi skuespillernavnet "Thomas Jensen Takyi", vil programmet vise en liste over alle skuespillere Ola har spilt sammen med.
+**Eksempeldata:** Ved å oppgi skuespillernavnet "Thomas Jensen Takyi", vil programmet vise en liste over alle skuespillere Thomas Jensen Takyi har spilt sammen med. Obs! Skriv inn navn med store forbokstaver. Eller så vil dere få en tilbakemelding om at det ikke finnes noen som spiller med valgt skuespiller.
 Skuespiller fra "Kongsemnene". 
 ```bash
 Thomas Jensen Takyi
