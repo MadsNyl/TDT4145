@@ -69,11 +69,11 @@ To forestillinger uten noen solgte billetter.
 **Forklaring:** Finn ut hvilke skuespillere en bestemt skuespiller har delt scene med i forskjellige teaterstykker.
 
 **Eksempeldata:** Ved å oppgi skuespillernavnet `Thomas Jensen Takyi`, vil programmet vise en liste over alle skuespillere Thomas Jensen Takyi har spilt sammen med. Obs! Skriv inn navn med store forbokstaver. Eller så vil dere få en tilbakemelding om at det ikke finnes noen som spiller med valgt skuespiller.
-Skuespiller fra "Kongsemnene". 
+Skuespiller fra `Kongsemnene`. 
 ```bash
 Thomas Jensen Takyi
 ```
-Skuespiller fra "Størst av alt er kjærligheten". 
+Skuespiller fra `Størst av alt er kjærligheten`. 
 ```bash
 Tor Ivar Hagen
 ```
