@@ -21,11 +21,11 @@ from queries import (
     best_seller
 )
 
-
-if __name__ == "__main__":
+def delete_database():
     # Dropper og lager databasen på nytt
-    print("Dropper databasen...")
     run_sql_script("drop.sql")
+
+def setup_database():
     print("Setter opp databasen...")
     run_sql_script("create.sql")
     # Popullerer databasen med data
@@ -38,15 +38,23 @@ if __name__ == "__main__":
     print("Skanner setene for Gamle scene og lager seksjoner, stoler og billetter...")
     run_old_scene()
 
+def display_menu():
+    print("\n\n\n1. Finn og kjøp 9 ledige seter på samme rad, og kalkuler totalpris.")
+    print("2. Hent forestillinger for en gitt dato, for å få informasjon om antall billetter solgt per forestilling.")
+    print("3. Hent alle skuespillere og deres roller for teaterstykkene.")
+    print("4. Hent sortert liste over mestselgende forestillinger")
+    print("5. Hent informasjon om skuespillere en gitt skuespiller har spilt sammen med.")
+    print("6. Avslutt")
+
+if __name__ == "__main__":
+
+    delete_database()
+    setup_database()
+
     # Kjører programmet
     while True:
-        print("\n\n\n1. Finn og kjøp 9 ledige seter på samme rad, og kalkuler totalpris.")
-        print("2. Hent forestillinger for en gitt dato, for å få informasjon om antall billetter solgt per forestilling.")
-        print("3. Hent alle skuespillere og deres roller for teaterstykkene.")
-        print("4. Hent sortert liste over mestselgende forestillinger")
-        print("5. Hent informasjon om skuespillere en gitt skuespiller har spilt sammen med.")
-        print("6. Avslutt")
 
+        display_menu()
         choice = input("\nVennligst velg et alternativ (1 - 6): \n")
 
         if choice == "6":
