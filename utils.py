@@ -49,8 +49,10 @@ def convert_actors_played_together_to_string(actorteams: list[tuple]) -> str:
 # Hent alle rader om mest solgte teaterstykker og omgjør til liste
 def convert_most_sold_plays_to_string(plays: list[tuple]) -> str:
     return_string = ""
+    standings = 1
     for play in plays:
-        return_string += f"Teaterstykke: {play[0]}, Dato: {play[1]}, Antall Biletter Solgt: {play[2]}\n"
+        return_string += f"{standings}. Teaterstykke: {play[0]}, Dato: {play[1]}, Antall Biletter Solgt: {play[2]}\n"
+        standings += 1
     return return_string
 
 
