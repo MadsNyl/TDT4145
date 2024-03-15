@@ -4,7 +4,8 @@ from utils import (
     convert_actors_and_roles_to_string,
     convert_plays_to_string,
     convert_actors_played_together_to_string,
-    convert_most_sold_plays_to_string
+    convert_most_sold_plays_to_string,
+    validate_date
 )
 
 from scan_seats_hovedscenen import run_main_scene
@@ -53,37 +54,65 @@ if __name__ == "__main__":
             break
 
         elif choice == "1":
-            tickets = get_available_seats()
-            insert_tickets(tickets)
-            tickets = convert_tickets_to_string(tickets)
-            print("Dine billetter:")
-            print(tickets)
-            total_price = calculate_total_tickets_price()
-            print(f"Totalpris for 9 voksenbilletter: {total_price} kr")
+            try:
+                tickets = get_available_seats()
+                insert_tickets(tickets)
+                tickets = convert_tickets_to_string(tickets)
+                if not len(tickets):
+                    print("Fant ingen ledige seter")
+                    continue
+                print("Dine billetter:")
+                print(tickets)
+                total_price = calculate_total_tickets_price()
+                print(f"Totalpris for 9 voksenbilletter: {total_price} kr")
+            except:
+                print("Det skjedde en feil. Prøv igjen.")
+                continue
         
         elif choice == "2":
-            date = input("Vennligst skriv inn en dato (YYYY-MM-DD): \n")
-            plays = get_show_and_tickets_purchased(date)
-            plays = convert_plays_to_string(plays)
-            print(f"Forestillinger og antall billetter solgt for {date}: ")
-            print(plays)
+            try:
+                date = input("Vennligst skriv inn en dato (YYYY-MM-DD): \n")
+                if not validate_date(date):
+                    print("\nUgyldig dato. Prøv igjen.")
+                    continue
+                plays = get_show_and_tickets_purchased(date)
+                plays = convert_plays_to_string(plays)
+                print(f"Forestillinger og antall billetter solgt for {date}: ")
+                print(plays)
+            except:
+                print("Det skjedde en feil. Prøv igjen.")
+                continue
 
         elif choice == "3":
-            actors = get_actors_and_roles()
-            actors = convert_actors_and_roles_to_string(actors)
-            print("Skuespillere og roller for hvert teaterstykke: ")
-            print(actors)
+            try:
+                actors = get_actors_and_roles()
+                actors = convert_actors_and_roles_to_string(actors)
+                print("Skuespillere og roller for hvert teaterstykke: ")
+                print(actors)
+            except:
+                print("Det skjedde en feil. Prøv igjen.")
+                continue
         
         elif choice == "4":
-            plays = best_seller()
-            plays = convert_most_sold_plays_to_string(plays)
-            print("Mestselgende forestillinger: ")
-            print(plays)
+            try:
+                plays = best_seller()
+                plays = convert_most_sold_plays_to_string(plays)
+                print("Mestselgende forestillinger: ")
+                print(plays)
+            except:
+                print("Det skjedde en feil. Prøv igjen.")
+                continue
         
         elif choice == "5":
-            actor = input("Vennligst skriv inn et skuespillernavn: \n")
-            actorteams = get_actors_played_together(actor)
-            actorteams = convert_actors_played_together_to_string(actorteams)
-            print("Skuespillere som har spilt sammen: ")
-            print(actorteams)
-
+            try:
+                actor = input("Vennligst skriv inn et skuespillernavn: \n")
+                actorteams = get_actors_played_together(actor)
+                if not len(actorteams):
+                    print(f"{actor} har ikke spilt sammen med noen.")
+                    continue
+                actorteams = convert_actors_played_together_to_string(actorteams)
+                print("Skuespillere som har spilt sammen: ")
+                print(actorteams)
+            except Exception as e:
+                print("Det skjedde en feil. Prøv igjen.")
+                continue

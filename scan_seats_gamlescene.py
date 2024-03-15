@@ -9,6 +9,7 @@ def run_old_scene():
     standard_row = 10
     seatNumber = 1
     playId = None
+    
     # Henter siste billettID fra scriptet som lager billetter for hovedscenen og legger til 1
     ticketId = cursor.execute("SELECT MAX(BillettID) FROM Billett").fetchone()[0] + 1
 
